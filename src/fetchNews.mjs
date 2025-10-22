@@ -33,4 +33,4 @@ async function fetchNews() {
   console.log(`✅ ${news.length} news items saved.`);
 }
 
-fetchNews(add fetchnews script);
+fetchNews();
