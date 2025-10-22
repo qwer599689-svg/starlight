@@ -1,0 +1,78 @@
+---
+import fs from "fs";
+import path from "path";
+
+const newsPath = path.resolve("src/data/news.json");
+let news = [];
+
+try {
+  const data = fs.readFileSync(newsPath, "utf-8");
+  news = JSON.parse(data);
+} catch (err) {
+  console.error("⚠️ 無法讀取新聞資料，請先執行 fetchNews.mjs");
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎬 Entertainment News</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #fafafa;
+        padding: 40px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+      }
+      .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+      }
+      .source {
+        color: #999;
+        font-size: 14px;
+      }
+      a {
+        color: #1a73e8;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>🎬 最新娛樂新聞</h1>
+    <div class="grid">
+      {news.length > 0 ? (
+        news.map((item) => (
+          <div class="card">
+            <h2>{item.title}</h2>
+            <p>{item.description || "（沒有摘要）"}</p >
+            <p class="source">
+              來源：{item.source} <br />
+              發布時間：{new Date(item.publishedAt).toLocaleString()}
+            </p >
+            閱讀全文 →
+          </div>
+        ))
+      ) : (
+        <p>暫時沒有新聞資料，請確認 fetchNews.mjs 是否有成功執行。</p >
+      )}
+    </div>
+  </body>
+</html>
